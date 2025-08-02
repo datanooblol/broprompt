@@ -12,10 +12,10 @@ Lightweight Python library for prompt template management with dynamic parameter
 ## Usage
 
 ```python
-from broprompt.prompt_management import load_markdown_prompt
+from broprompt.prompt_engineering import Prompt
 
 # Load template from markdown file
-prompts = load_markdown_prompt("system_prompt.md")
+prompts = Prompt.from_markdown("system_prompt.md")
 
 # Set parameters
 prompts.params.role = "assistant"
