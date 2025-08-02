@@ -1,26 +1,24 @@
 from .prompt_engineering import Prompt, PromptParams
-# from .core.templates import Prompt, PromptTemplate
-# from .core.examples import FewShot, OneShot, ZeroShot, Example
-# from .patterns.react import ReACT
-# from .patterns.reflection import Reflection
-# from .integrations.structured_output import StructuredOutput
-# from .integrations.tool_calling import ToolRegistry, ToolDefinition, tool
+from .tools import (
+    python_type_to_json_type,
+    convert_to_tool,
+    register_tools,
+    list_tools,
+    generate_extract_parameters_prompt,
+    validate_parameters,
+    parse_codeblock_to_dict
+)
 
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 
 __all__ = [
     "Prompt",
     "PromptParams",
-    # "Prompt",
-    # "PromptTemplate", 
-    # "FewShot",
-    # "OneShot",
-    # "ZeroShot",
-    # "Example",
-    # "ReACT",
-    # "Reflection",
-    # "StructuredOutput",
-    # "ToolRegistry",
-    # "ToolDefinition",
-    # "tool",
+    "python_type_to_json_type",
+    "convert_to_tool",
+    "register_tools",
+    "list_tools",
+    "generate_extract_parameters_prompt",
+    "validate_parameters",
+    "parse_codeblock_to_dict"
 ]

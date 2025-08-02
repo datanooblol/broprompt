@@ -8,6 +8,8 @@ Lightweight Python library for prompt template management with dynamic parameter
 - Dynamic parameter access via dot notation
 - Template + parameter combination into final prompt strings
 - Export/import parameters as dictionaries
+- Function-to-tool conversion utilities
+- Parameter validation and extraction
 
 ## Usage
 
@@ -29,6 +31,22 @@ params_dict = prompts.to_dict()
 
 # Import parameters
 prompts.from_dict({"role": "expert", "tone": "professional"})
+```
+
+### Tools Module
+
+```python
+from broprompt.tools import convert_to_tool, register_tools
+
+# Convert function to tool definition
+def my_function(name: str, age: int) -> str:
+    """Greets a person with their name and age."""
+    return f"Hello {name}, you are {age} years old!"
+
+tool_def = convert_to_tool(my_function)
+
+# Register multiple tools
+tools = register_tools([my_function])
 ```
 
 ## Template Format
