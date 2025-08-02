@@ -1,4 +1,4 @@
-from .prompt_management import load_markdown_prompt
+from .prompt_engineering import Prompt, PromptParams
 # from .core.templates import Prompt, PromptTemplate
 # from .core.examples import FewShot, OneShot, ZeroShot, Example
 # from .patterns.react import ReACT
@@ -9,7 +9,8 @@ from .prompt_management import load_markdown_prompt
 __version__ = "0.1.0"
 
 __all__ = [
-    "load_markdown_prompt",
+    "Prompt",
+    "PromptParams",
     # "Prompt",
     # "PromptTemplate", 
     # "FewShot",
