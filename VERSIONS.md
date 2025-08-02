@@ -1,5 +1,9 @@
 # Version History
 
+## 0.1.3 (Context Module)
+- Added `broprompt.context` module with Context dataclass equivalent to LangChain Document
+- Context includes `context`, `metadata`, auto-generated `id`, and UTC `created_at` timestamp
+
 ## 0.1.2 (Tools Module)
 - Added `broprompt.tools` module for function-to-tool conversion
 - Function signature analysis and JSON schema generation
