@@ -1,5 +1,5 @@
 import re
-from typing import Any, Optional, List
+from typing import Optional, List
 
 class PromptParams:
     """Dynamic parameter container for template variables.
