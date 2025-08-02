@@ -1,5 +1,8 @@
 # Version History
 
+## 0.1.4 (Context Registration)
+- Registered Context class in __init__.py for direct import access
+
 ## 0.1.3 (Context Module)
 - Added `broprompt.context` module with Context dataclass equivalent to LangChain Document
 - Context includes `context`, `metadata`, auto-generated `id`, and UTC `created_at` timestamp
