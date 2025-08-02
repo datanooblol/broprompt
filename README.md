@@ -49,6 +49,25 @@ tool_def = convert_to_tool(my_function)
 tools = register_tools([my_function])
 ```
 
+### Context Module
+
+```python
+from broprompt.context import Context
+
+# Create a context (LangChain Document equivalent)
+ctx = Context(
+    context="This is the document content",
+    metadata={"source": "file.txt", "type": "text"}
+)
+
+# Access content
+print(ctx.context)  # Direct access
+
+# Automatic fields
+print(ctx.id)         # Auto-generated UUID
+print(ctx.created_at) # UTC timestamp
+```
+
 ## Template Format
 
 Use `{parameter_name}` placeholders in your markdown files:

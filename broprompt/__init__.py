@@ -8,8 +8,9 @@ from .tools import (
     validate_parameters,
     parse_codeblock_to_dict
 )
+from .context import Context
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 __all__ = [
     "Prompt",
