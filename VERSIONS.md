@@ -1,5 +1,13 @@
 # Version History
 
+## 0.1.5 (YAML Function & Schema Definition)
+- Enhanced `get_yaml_function_definition()` to generate cleaner YAML schema templates
+- Added `get_yaml_schema_definition()` for Pydantic model to YAML schema conversion
+- Support for structured output extraction with array and single object formats
+- Improved string parameter formatting with proper quotes in YAML output
+- Streamlined function definition prompts for better LLM integration
+- Added examples repository with prompt techniques and integration patterns
+
 ## 0.1.4 (Context Registration)
 - Registered Context class in __init__.py for direct import access
 
