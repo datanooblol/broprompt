@@ -209,6 +209,72 @@ Return only the YAML format:
 User input: {{user_input}}"""
     return prompt
 
+def get_yaml_function_definition(func):
+    """Generate a prompt template for extracting function parameters from user input.
+    
+    Creates a structured prompt that can be used to extract parameters from natural
+    language input and format them as YAML for function calling.
+    
+    Args:
+        func: Python function to generate extraction prompt for
+        
+    Returns:
+        str: Formatted prompt template with parameter extraction instructions
+        
+    Example:
+        >>> def weather(city: str, units: str = 'celsius') -> str:
+        ...     '''<|start|>Get weather for a city<|end|>'''
+        ...     return f"Weather in {city}"
+        >>> prompt = generate_extract_parameters_prompt(weather)
+        >>> 'city: <value>' in prompt
+        True
+        >>> 'units: <value>' in prompt
+        True
+    """
+    sig = inspect.signature(func)
+    doc = inspect.getdoc(func) or ""
+    
+    # Extract description between <|start|> and <|end|>
+    desc_match = re.search(r'<\|start\|>(.*?)<\|end\|>', doc, re.DOTALL)
+    description = desc_match.group(1).strip() if desc_match else ""
+    description = re.sub(r'\s+', ' ', description).strip()
+    
+    # Build parameter info
+    params = []
+    for name, param in sig.parameters.items():
+        param_type = param.annotation.__name__ if param.annotation != inspect.Parameter.empty else "any"
+        params.append(f"- {name} ({param_type})")
+    
+    # Build YAML template with proper formatting for lists
+    yaml_lines = []
+    for name, param in sig.parameters.items():
+        if param.annotation != inspect.Parameter.empty:
+            origin = typing.get_origin(param.annotation) or param.annotation
+            if origin in [list, tuple]:
+                yaml_lines.append(f"{name}: [<value>]")
+            elif origin == str:
+                yaml_lines.append(f'{name}: "<value>"')
+            else:
+                yaml_lines.append(f"{name}: <value>")
+        else:
+            yaml_lines.append(f"{name}: <value>")
+    
+    yaml_template = "\n".join(yaml_lines)
+    
+    prompt = f"""\
+Function: {func.__name__}{sig}
+Description: {description}
+
+Parameters:
+{chr(10).join(params)}
+
+Return only the YAML format:
+```yaml
+{yaml_template}
+```
+""".strip()
+    return prompt
+
 def validate_parameters(params_dict, func):
     """Validate extracted parameters against function signature and types.
     
@@ -296,3 +362,49 @@ def parse_codeblock_to_dict(output_str: str, codeblock: Literal['yaml', 'json'] 
     if codeblock=='json':
         return json.loads(_output_str)
     return yaml.safe_load(_output_str)
+
+def get_yaml_schema_definition(cls, as_array=False):
+    schema = cls.model_json_schema()
+    
+    params = []
+    yaml_lines = []
+    
+    for field_name, field_info in schema['properties'].items():
+        field_type = field_info['type']
+        # params.append(f"- {field_name} ({field_type})")
+        description = field_info.get('description', '')
+        params.append(f"- {field_name} ({field_type}) # {description}")
+                
+        
+        if field_type == 'string':
+            yaml_lines.append(f'{field_name}: "<value>"')
+        else:
+            yaml_lines.append(f"{field_name}: <value>")
+    def lambda_indent(lines):
+        _lines = []
+        for enum, l in enumerate(lines):
+            if enum == 0:
+                _lines.append("- {l}".format(l=l))
+            else:
+                _lines.append("  {l}".format(l=l))
+        return "\n".join(_lines)
+    
+    if as_array:
+        yaml_template = "\n".join([lambda_indent(yaml_lines) for i in range(2)])
+    else:
+        yaml_template = "\n".join(yaml_lines)
+    
+    description = cls.__doc__ or f"Extract {cls.__name__} information"    
+    prompt = f"""\
+Model: {cls.__name__}
+Description: {description}
+
+Parameters:
+{chr(10).join(params)}
+
+Return only the YAML format:
+```yaml
+{yaml_template}
+```
+""".strip()
+    return prompt

@@ -6,11 +6,13 @@ from .tools import (
     list_tools,
     generate_extract_parameters_prompt,
     validate_parameters,
-    parse_codeblock_to_dict
+    parse_codeblock_to_dict,
+    get_yaml_function_definition,
+    get_yaml_schema_definition,
 )
 from .context import Context
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 __all__ = [
     "Prompt",
@@ -22,5 +24,7 @@ __all__ = [
     "generate_extract_parameters_prompt",
     "validate_parameters",
     "parse_codeblock_to_dict",
-    "Context"
+    "Context",
+    "get_yaml_function_definition",
+    "get_yaml_schema_definition"
 ]
